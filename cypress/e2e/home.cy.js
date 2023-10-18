@@ -82,12 +82,13 @@ describe('Product Detail', () => {
     cy.get('button.nav-search-btn').click();
 
     cy.get('div.ui-search-result__wrapper').should('exist');
-    cy.get('h2.ui-search-item__title').first().invoke('text');
-    cy.get('h2.ui-search-item__title').first().click();
-
-    cy.get('div.ui-pdp-container').should('exist');
-    cy.get('h1.ui-pdp-title').invoke('text').then((text) => {
-      cy.get('h2.ui-search-item__title').first().invoke('text').should('eq', text);
+    // save the title of the first product, in a variable
+    cy.get('h2.ui-search-item__title').first().then(($title) => {
+      const title = $title.text();
+      cy.get('h2.ui-search-item__title').first().click();
+      // verify that the title of the product detail is the same as the one saved
+      cy.get('div.ui-pdp-container').should('exist');
+      cy.get('h1.ui-pdp-title').should('contain', title);
     });
 
   });
