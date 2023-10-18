@@ -132,3 +132,41 @@ describe('Product Detail', () => {
   });
 
 });
+
+describe('Login', () => {
+  it('should show login page', () => {
+    cy.visit('https://www.mercadolibre.com.co/');
+
+    cy.get('a[data-link-id="login"]').click();
+
+    cy.origin('https://www.mercadolibre.com/', () => {
+      cy.get('input#user_id').should('exist');
+    });
+  });
+
+  it('login should work', () => {
+    cy.visit('https://www.mercadolibre.com.co/');
+
+    cy.get('a[data-link-id="login"]').click();
+
+    cy.origin('https://www.mercadolibre.com/', () => {
+      cy.get('input#user_id').should('exist');
+      cy.get('input#user_id').type('santiago.montesb@gmail.com');
+      cy.get('button.login-form__actions--submit').click();
+    });
+  });
+
+  it("wrong login shouldn't work", () => {
+    cy.visit('https://www.mercadolibre.com.co/');
+
+    cy.get('a[data-link-id="login"]').click();
+
+    cy.origin('https://www.mercadolibre.com/', () => {
+      cy.get('input#user_id').should('exist');
+      cy.get('input#user_id').type('...');
+      cy.get('button.login-form__actions--submit').click();
+      cy.get('button.login-form__actions--submit').should('exist');
+    });
+  });
+
+});
